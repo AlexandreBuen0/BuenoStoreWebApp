@@ -1,0 +1,83 @@
+<div class="row">
+  <div class="col-md-4 offset-md-4">
+    <div class="guest-form-card card">
+
+      <div class="card-header text-center">
+        <h2>Cadastro</h2>
+      </div>
+
+      <div class="card-body">
+        <form [formGroup]="cadastroForm" (ngSubmit)="register()">
+          <div class="form-group">
+            <label for="nome">Nome</label>
+            <input
+              id="nome"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': cadastroForm.get('nome')!.touched && cadastroForm.get('nome')!.invalid }"
+              formControlnome="nome"
+            />
+            <span class="invalid-feedback">O nome não pode ser vazio.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': cadastroForm.get('email')!.touched && cadastroForm.get('email')!.invalid }"
+              formControlnome="email"
+            />
+            <span class="invalid-feedback">
+              <span *ngIf="cadastroForm.get('email')!.hasError('required')">O e-mail não pode ser vazio.</span>
+              <span *ngIf="cadastroForm.get('email')!.hasError('email')">O e-mail precisa ser válido.</span>
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="usuario">Usuário</label>
+            <input
+              id="usuario"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': cadastroForm.get('usuario')!.touched && cadastroForm.get('usuario')!.invalid }"
+              formControlnome="usuario"
+            />
+            <span class="invalid-feedback">O usuário não pode ser vazio.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="senha">Senha</label>
+            <input
+              type="password"
+              id="senha"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': cadastroForm.get('senha')!.touched && cadastroForm.get('senha')!.invalid }"
+              formControlnome="senha"
+            />
+            <span class="invalid-feedback">
+              <span *ngIf="cadastroForm.get('senha')!.hasError('required')">A senha não pode ser vazia.</span>
+              <span *ngIf="cadastroForm.get('senha')!.hasError('symbol')">A senha precisa conter um caracter especial @</span>
+              <span *ngIf="cadastroForm.get('senha')!.hasError('minlength')">A senha deve possuir no mínimo 4 caracteres</span>
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="confirmacaoSenha">Confirmação de senha</label>
+            <input
+              type="password"
+              id="confirmacaoSenha"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': cadastroForm.get('confirmacaoSenha')!.touched && cadastroForm.get('confirmacaoSenha')!.invalid }"
+              formControlnome="confirmacaoSenha"
+            />
+            <span class="invalid-feedback">As senhas devem ser iguais.</span>
+          </div>
+          
+          <div style="margin-top: 5px;" class="text-end">
+            <button class="btn btn-primary btn-block" [disabled]="cadastroForm.invalid">Cadastrar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
