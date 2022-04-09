@@ -7,74 +7,35 @@
       </div>
 
       <div class="card-body">
-        <form [formGroup]="cadastroForm" (ngSubmit)="register()">
-          <div class="form-group">
-            <label for="nome">Nome</label>
-            <input
-              id="nome"
-              class="form-control"
-              [ngClass]="{ 'is-invalid': cadastroForm.get('nome')!.touched && cadastroForm.get('nome')!.invalid }"
-              formControlnome="nome"
-            />
-            <span class="invalid-feedback">O nome não pode ser vazio.</span>
+        <form class="my-form" #cadastroForm=ngForm (ngSubmit)="Submit()">
+          <div class="example-container">
+            <mat-form-field appearance="fill" style="width: 100%;">
+              <mat-label>E-mail</mat-label>
+              <input matInput placeholder="exemplo@exemplo.com.br" [formControl]="email" required>
+              <mat-error *ngIf="email.invalid">{{validarEmail()}}</mat-error>
+            </mat-form-field>
           </div>
 
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              class="form-control"
-              [ngClass]="{ 'is-invalid': cadastroForm.get('email')!.touched && cadastroForm.get('email')!.invalid }"
-              formControlnome="email"
-            />
-            <span class="invalid-feedback">
-              <span *ngIf="cadastroForm.get('email')!.hasError('required')">O e-mail não pode ser vazio.</span>
-              <span *ngIf="cadastroForm.get('email')!.hasError('email')">O e-mail precisa ser válido.</span>
-            </span>
-          </div>
-
-          <div class="form-group">
-            <label for="usuario">Usuário</label>
-            <input
-              id="usuario"
-              class="form-control"
-              [ngClass]="{ 'is-invalid': cadastroForm.get('usuario')!.touched && cadastroForm.get('usuario')!.invalid }"
-              formControlnome="usuario"
-            />
-            <span class="invalid-feedback">O usuário não pode ser vazio.</span>
-          </div>
-
-          <div class="form-group">
-            <label for="senha">Senha</label>
-            <input
-              type="password"
-              id="senha"
-              class="form-control"
-              [ngClass]="{ 'is-invalid': cadastroForm.get('senha')!.touched && cadastroForm.get('senha')!.invalid }"
-              formControlnome="senha"
-            />
-            <span class="invalid-feedback">
-              <span *ngIf="cadastroForm.get('senha')!.hasError('required')">A senha não pode ser vazia.</span>
-              <span *ngIf="cadastroForm.get('senha')!.hasError('symbol')">A senha precisa conter um caracter especial @</span>
-              <span *ngIf="cadastroForm.get('senha')!.hasError('minlength')">A senha deve possuir no mínimo 4 caracteres</span>
-            </span>
-          </div>
-
-          <div class="form-group">
-            <label for="confirmacaoSenha">Confirmação de senha</label>
-            <input
-              type="password"
-              id="confirmacaoSenha"
-              class="form-control"
-              [ngClass]="{ 'is-invalid': cadastroForm.get('confirmacaoSenha')!.touched && cadastroForm.get('confirmacaoSenha')!.invalid }"
-              formControlnome="confirmacaoSenha"
-            />
-            <span class="invalid-feedback">As senhas devem ser iguais.</span>
-          </div>
+          <mat-form-field appearance="fill" style="width: 100%;">
+            <mat-label>Senha</mat-label>
+            <input matInput [type]="exibir ? 'password' : 'text'" [formControl]="senha">
+            <mat-error *ngIf="senha.invalid">{{validarSenha()}}</mat-error>
+            <button mat-icon-button matSuffix (click)="exibir = !exibir" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="exibir">
+              <mat-icon>{{exibir ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
+      
+          <mat-form-field appearance="fill" style="width: 100%;">
+            <mat-label>Confirmação Senha</mat-label>
+            <input matInput [type]="exibirConfirmacao ? 'password' : 'text'" [formControl]="confirmacaoSenha" (focusout)="validarConfirmacaoSenha()">
+            <mat-error *ngIf="confirmacaoSenha.invalid">{{validarConfirmacaoSenha()}}</mat-error>
+            <button mat-icon-button matSuffix (click)="exibirConfirmacao = !exibirConfirmacao" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="exibirConfirmacao">
+              <mat-icon>{{exibirConfirmacao ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
           
           <div style="margin-top: 5px;" class="text-end">
-            <button class="btn btn-primary btn-block" [disabled]="cadastroForm.invalid">Cadastrar</button>
+            <button class="btn btn-primary btn-block" type="submit">Cadastrar</button>
           </div>
         </form>
       </div>

@@ -1,34 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms'
-
-/**
- *
- * @param form
- */
-
-function passwordsMatchValidator(form) {
-  const senha = form.get('password')
-  const confirmacaoSenha = form.get('confirmacaoSenha')
-
-  if(senha.value !== confirmacaoSenha.value) {
-    confirmacaoSenha.setErrors({ passwordsMatch: true })
-  } else {
-    confirmacaoSenha.setErrors(null)
-  }
-
-  return null
-}
-
-function symbolValidator(control) {
-  if(control.hasError('required')) return null;
-  if(control.hasError('minlength')) return null;
-
-  if(control.value.indexOf('@') > -1) {
-    return null
-  } else {
-    return { symbol: true }
-  }
-}
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
+import { RegistrarUsuario } from 'src/app/models/registrar-usuario';
+import { UsuarioService } from 'src/app/services/usuario-service';
 
 @Component({
   selector: 'app-cadastro',
@@ -37,27 +10,51 @@ function symbolValidator(control) {
 })
 export class CadastroComponent implements OnInit {
 
-  cadastroForm: FormGroup;
+  email = new FormControl('', [Validators.required, Validators.email]);
+  senha = new FormControl('', [Validators.required]);
+  confirmacaoSenha = new FormControl('', [Validators.required]);
+  
+  exibir = true;
+  exibirConfirmacao = true;
 
-  constructor(private builder: FormBuilder) { }
+  constructor(private usuarioService: UsuarioService) { }
 
-  ngOnInit() {
-    this.buildForm()
+  ngOnInit() { }
+
+  validarEmail() {
+    if (this.email.hasError('required')) {
+      return 'O campo não pode ser vazio.';
+    }
+
+    return this.email.hasError('email') ? 'Esse e-mail não esta em um formato válido.' : '';
   }
 
-  buildForm() {
-    this.cadastroForm = this.builder.group({
-      nome: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      usuario: ['', Validators.required],
-      senha: ['', [Validators.required, symbolValidator, Validators.minLength(4)]],
-      confirmacaoSenha: ''
-    }, {
-      validators: passwordsMatchValidator
-    })
+  validarSenha() {
+    if (this.senha.hasError('required')) {
+      return 'O campo não pode ser vazio.';
+    }
+
+    return this.senha.hasError('senha') ? 'A senha não esta em um formato válido.' : '';
   }
 
-  register() {
-    console.log(this.cadastroForm.value)
+  validarConfirmacaoSenha() {
+    if (this.confirmacaoSenha.hasError('required')) {
+      return 'O campo não pode ser vazio.';
+    }
+
+    if (this.confirmacaoSenha.value !== this.senha.value) {
+      this.confirmacaoSenha.setErrors({'invalid': true})
+      return 'As senhas devem ser iguais.';
+    }
+
+    return this.confirmacaoSenha.hasError('confirmacaoSenha') ? 'A confirmação da senha não está em um formato válido.' : '';
+  }
+
+  Submit() {
+    var registrarUsuarioModel = new RegistrarUsuario(this.email.value, this.senha.value, this.confirmacaoSenha.value);
+    
+    this.usuarioService.registrarUsuario(registrarUsuarioModel).subscribe(response => {
+      console.log(response);
+    });
   }
 }
