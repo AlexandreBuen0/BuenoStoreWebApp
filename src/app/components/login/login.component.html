@@ -8,17 +8,22 @@
 
       <div class="card-body">
         <form #loginForm="ngForm" (ngSubmit)="login()">
-          <div class="form-group">
-            <label for="usuario">Usuário</label>
-            <input id="usuario" class="form-control" [ngClass]="{ 'is-invalid': usuario.touched && usuario.invalid }" name="usuario" #usuario="ngModel" [(ngModel)]="model.usuario" required />
-            <span class="invalid-feedback">Usuário não pode ser vazio.</span>
+          <div class="example-container">
+            <mat-form-field appearance="fill" style="width: 100%;">
+              <mat-label>E-mail</mat-label>
+              <input matInput placeholder="exemplo@exemplo.com.br" [formControl]="email" required>
+              <mat-error *ngIf="email.invalid">{{validarEmail()}}</mat-error>
+            </mat-form-field>
           </div>
 
-          <div class="form-group">
-            <label for="senha">Senha</label>
-            <input type="password" id="senha" name="senha" class="form-control" [ngClass]="{ 'is-invalid': senha.touched && senha.invalid }" #senha="ngModel" [(ngModel)]="model.senha" required />
-            <span class="invalid-feedback">A senha não pode ser vazio.</span>
-          </div>
+          <mat-form-field appearance="fill" style="width: 100%;">
+            <mat-label>Senha</mat-label>
+            <input matInput [type]="exibir ? 'password' : 'text'" [formControl]="senha">
+            <mat-error *ngIf="senha.invalid">{{validarSenha()}}</mat-error>
+            <button mat-icon-button matSuffix (click)="exibir = !exibir" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="exibir">
+              <mat-icon>{{exibir ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
 
           <div style="margin-top: 5px;" class="text-end">
             <button class="btn btn-primary btn-block" [disabled]="loginForm.invalid">Entrar</button>

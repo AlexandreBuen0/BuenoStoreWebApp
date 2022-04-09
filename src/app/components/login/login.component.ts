@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { Login } from 'src/app/models/login';
+import { UsuarioService } from 'src/app/services/usuario-service';
 
 @Component({
   selector: 'app-login',
@@ -7,15 +10,38 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  model: any = {}
+  email = new FormControl('', [Validators.required, Validators.email]);
+  senha = new FormControl('', [Validators.required]);
 
-  constructor() { }
+  exibir = true;
+
+  constructor(private usuarioService: UsuarioService) { }
 
   ngOnInit() {
   }
 
+  validarEmail() {
+    if (this.email.hasError('required')) {
+      return 'O campo não pode ser vazio.';
+    }
+
+    return this.email.hasError('email') ? 'Esse e-mail não esta em um formato válido.' : '';
+  }
+
+  validarSenha() {
+    if (this.senha.hasError('required')) {
+      return 'O campo não pode ser vazio.';
+    }
+
+    return this.senha.hasError('senha') ? 'A senha não esta em um formato válido.' : '';
+  }
+
   login() {
-    console.log(this.model)
+    var login = new Login(this.email.value, this.senha.value);
+    
+    this.usuarioService.login(login).subscribe(response => {
+      console.log(response);
+    });
   }
 
 }
