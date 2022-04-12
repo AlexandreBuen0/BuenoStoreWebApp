@@ -1,0 +1,5 @@
+<div class="carrinho-item">
+  <span>{{ carrinhoItem.nome }}</span> x
+  <span>{{ carrinhoItem.quantidade }}</span>:
+  <strong>{{ (carrinhoItem.quantidade * carrinhoItem.valor) | currency:'BRL' }}</strong>
+</div>
