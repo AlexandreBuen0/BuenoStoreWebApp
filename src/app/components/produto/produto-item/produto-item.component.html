@@ -1,9 +1,10 @@
 <div class="card-group" style="margin-top: 10px;">
   <div class="card">
-    <img class="bd-placeholder-img card-img-top p-2" width="100%" [src]="produtoItem.imagem" />
+    <img class="bd-placeholder-img card-img-top p-2" width="450" height="450" [src]="produtoItem.imagem" />
+    <hr>
     <div class="card-body">
-      <h5 class="card-title">{{ produtoItem.nome | slice: 0:99 }}</h5>
-      <p class="card-text">{{ produtoItem.descricao | slice: 0:99 }}</p>
+      <h3 class="card-title">{{ produtoItem.nome | slice: 0:40 }}...</h3>
+      <p class="card-text">{{ produtoItem.descricao | slice: 0:50 }}...</p>
       <div class="btn-group" *ngIf="usuariologado()">
         <button type="button" class="btn btn-sm btn-primary product-btn" (click)="adicionarItemAoCarrinho()">+ Carrinho</button>
       </div>
