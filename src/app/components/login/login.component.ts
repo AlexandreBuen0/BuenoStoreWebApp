@@ -37,6 +37,10 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
+    if (this.email.hasError('required') || this.email.hasError('email') || this.senha.hasError('required') || this.senha.hasError('senha')) {
+      return;
+    }
+    
     var login = new Login(this.email.value, this.senha.value);
     
     this.usuarioService.login(login).subscribe(response => {
